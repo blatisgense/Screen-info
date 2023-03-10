@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Screen info</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800');
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #FFE53B;
+            background-image: linear-gradient(147deg, #FFE53B 0%, #fd3838 74%);
+            height: 100vh;
+            overflow-x: hidden;
+            padding: 0 24px 0 24px;
+            margin: 0;
+            font-family: 'Fira Sans', sans-serif;
+        }
+        .card{
+            background-color: aliceblue;
+            width: fit-content;
+            padding: 24px 48px;
+            border-radius: 16px;
+            z-index: 20;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:after{
+            border: 2px dashed white;
+            z-index: -1;
+            position: absolute;
+            width: calc(100% + 10px);
+            height: calc(100% + 10px);
+            top: -7px;
+            left: -7px;
+            content: '';
+            border-radius: 16px;
+        }
+        span{
+            padding: 0;
+            margin: 0;
+            font-weight: 500;
+            font-size: 24px;
+            color: #4e4a67;
+        }
+        p{
+            padding: 0;
+            margin: 0;
+            font-weight: 500;
+            font-size: 24px;
+            color: #4e4a67;
+            margin-bottom: 20px;
+        }
+        p span{
+            padding: 0;
+            margin: 0;
+            font-weight: 500;
+            font-size: 24px;
+            color: #4e4a67;
+            margin-bottom: 20px;
+        }
+        .paragraph{
+            margin-bottom: 25px;
+            display: flex;
+            gap: 15px;
+        }
+        h1{
+            margin-bottom: 35px;
+        }
+        .advanced{
+            margin-top: 50px;
+        }
+        #screenshot_btn{
+            margin-top: 35px;
+            background-image: linear-gradient(147deg, #fe8a39 0%, #fd3838 74%);
+            padding: 15px 65px;
+            border-radius: 50px;
+            color: #fff;
+            box-shadow: 0 14px 80px rgba(252, 56, 56, 0.4);
+            text-decoration: none;
+            font-weight: 500;
+            border: none;
+            font-family: 'Fira Sans', sans-serif;
+            letter-spacing: 1.5px;
+            font-size: 26px;
+        }
+        .language{
+            margin-top: 30px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 20px;
+        }
+        #help{
+            margin-left: auto;
+        }
+        #help_container{
+            display: none;
+            position: absolute;
+        }
+        #help_container.active{
+            background-color: aliceblue;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            border: 3px solid cornsilk;
+            box-shadow: 0 14px 80px rgba(252, 56, 56, 0.4);
+            right: 24px;
+            border-radius: 14px;
+            top: 24px;
+            bottom: 24px;
+            left: 24px;
+            padding-top: 44px;
+        }
+        .language button{
+            background-image: linear-gradient(147deg, #fe8a39 0%, #fd3838 74%);
+            border-radius: 50px;
+            color: #fff;
+            box-shadow: 0 14px 80px rgba(252, 56, 56, 0.4);
+            text-decoration: none;
+            font-weight: 400;
+            border: none;
+            font-family: 'Fira Sans', sans-serif;
+            letter-spacing: 1.5px;
+            font-size: 18px;
+            padding: 10px 22px;
+        }
+        #contacts{
+            margin-top: auto;
+        }
+        .svg-icon{
+            fill: burlywood;
+            position: absolute;
+            top: 10px;
+            width: 30px;
+            height: 30px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="card" id="content">
+    <div class="info">
+        <h1 id="title">Screen Info by @Blatisgense</h1>
+        <div class="paragraph">
+            <span id="resolution_width"><span id="sw">Screen width: </span></span>
+            <span id="resolution_height"><span id="sh">Screen height: </span></span>
+        </div>
+        <div class="paragraph">
+            <span id="available_width"><span id="aw">Available width: </span></span>
+            <span id="available_height"><span id="ah">Available height: </span></span>
+        </div>
+        <div class="paragraph">
+            <span id="window_width"><span id="ww">Window width: </span></span>
+            <span id="window_height"><span id="wh">Window height: </span></span>
+        </div>
+        <div class="advanced">
+            <p id="color_depth"><span id="cd">Color depth: </span> </p>
+            <p id="orientationn"><span id="so">Screen orientation:  </span></p>
+        </div>
+    </div>
+
+    <button id="screenshot_btn">Screenshot</button>
+
+    <div class="language">
+        <button id="rus">Русский</button>
+        <button id="eng">English</button>
+        <button id="help">Help</button>
+    </div>
+
+    <div id="help_container">
+        <svg id="close" class="svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M810.65984 170.65984q18.3296 0 30.49472 12.16512t12.16512 30.49472q0 18.00192-12.32896 30.33088l-268.67712 268.32896 268.67712 268.32896q12.32896 12.32896 12.32896 30.33088 0 18.3296-12.16512 30.49472t-30.49472 12.16512q-18.00192 0-30.33088-12.32896l-268.32896-268.67712-268.32896 268.67712q-12.32896 12.32896-30.33088 12.32896-18.3296 0-30.49472-12.16512t-12.16512-30.49472q0-18.00192 12.32896-30.33088l268.67712-268.32896-268.67712-268.32896q-12.32896-12.32896-12.32896-30.33088 0-18.3296 12.16512-30.49472t30.49472-12.16512q18.00192 0 30.33088 12.32896l268.32896 268.67712 268.32896-268.67712q12.32896-12.32896 30.33088-12.32896z"/></svg>
+        <p class="help_text" id="help_res"><b style="color: #180594">Screen resolution</b> is the number of pixels a screen can show horizontally and vertically.</p>
+        <p class="help_text" id="help_avl"><b style="color: #180594">Available screen</b> is the number of pixels that can used by applications (For example without Windows taskbar).</p>
+        <p class="help_text" id="help_win"><b style="color: #180594">Window size</b> is the number of pixels that can used by browser for displaying content.</p>
+        <p class="help_text" id="help_dep"><b style="color: #180594">Color depth</b> refers to the maximum number of colors an image can contain.</p>
+        <p id="contacts">For all questions write on telegram to <b style="color: #180594">@blatisgense</b>.</p>
+    </div>
+</div>
+</body>
+<script>
+    const content = document.getElementById('content')
+    const resolution_height = document.getElementById('resolution_height')
+    const resolution_width = document.getElementById('resolution_width')
+    const available_height = document.getElementById('available_height')
+    const available_width = document.getElementById('available_width')
+    const window_width = document.getElementById('window_width')
+    const window_height = document.getElementById('window_height')
+    const color_depth = document.getElementById('color_depth')
+    const orientationn = document.getElementById('orientationn')
+
+    resolution_width.innerHTML += screen.width + 'px'
+    available_width.innerHTML += screen.availWidth + 'px'
+    resolution_height.innerHTML += screen.height + 'px'
+    available_height.innerHTML += screen.availHeight + 'px'
+    window_width.innerHTML += window.innerWidth + 'px'
+    window_height.innerHTML += window.innerHeight + 'px'
+    color_depth.innerHTML += screen.colorDepth + ' Bit'
+    orientationn.innerHTML += screen.orientation.type
+
+    function capture () {
+        html2canvas(content).then(canvas => {
+            let a = document.createElement("a");
+            a.download = "ss.png";
+            a.href = canvas.toDataURL("image/png");
+            a.click();
+        });
+    }
+
+    const screenshot_btn = document.getElementById('screenshot_btn')
+    screenshot_btn.addEventListener('click', capture)
+
+    const sw = document.getElementById('sw')
+    const sh = document.getElementById('sh')
+    const aw = document.getElementById('aw')
+    const ah = document.getElementById('ah')
+    const ww = document.getElementById('ww')
+    const wh = document.getElementById('wh')
+    const cd = document.getElementById('cd')
+    const so = document.getElementById('so')
+    const title = document.getElementById('title')
+    const help = document.getElementById('help')
+    const help_container = document.getElementById('help_container')
+    const close = document.getElementById('close')
+
+    const help_res = document.getElementById('help_res')
+    const help_avl = document.getElementById('help_avl')
+    const help_win = document.getElementById('help_win')
+    const help_dep = document.getElementById('help_dep')
+    const contacts = document.getElementById('contacts')
+
+    help.addEventListener('click', ()=>{
+        help_container.classList.add('active')
+    })
+
+    close.addEventListener('click', ()=>{
+        help_container.classList.remove('active')
+    })
+
+    const lang_ru = document.getElementById('rus')
+    const lang_eng = document.getElementById('eng')
+    lang_ru.addEventListener('click', ()=>{
+        help.innerHTML = 'Помощь';
+        title.innerHTML = 'Информация об экране от @Blatisgense';
+        sw.innerHTML = 'Ширина экрана: ';
+        sh.innerHTML = 'Высота экрана: ';
+        aw.innerHTML = 'Доступная ширина: ';
+        ah.innerHTML = 'Доступная высота: ';
+        ww.innerHTML = 'Ширина в браузере: ';
+        wh.innerHTML = 'Высота в браузере: ';
+        so.innerHTML = 'Ориентация экрана:  ';
+        cd.innerHTML = 'Глубина цвета: ';
+        screenshot_btn.innerHTML = 'Скриншот';
+
+        help_res.innerHTML = '<b style="color: #180594">Разрешение экрана</b>  это количество пикселей которое экран может отобразить вертикально и горизонтально.';
+        help_avl.innerHTML = '<b style="color: #180594">Доступный экран</b> это количество пикселей которое может быть использовано приложениями (Например без Windows панели задач).';
+        help_win.innerHTML = '<b style="color: #180594">Размер окна</b> это количество пикселей которое может быть использовано браузером для отображения контента.';
+        help_dep.innerHTML = '<b style="color: #180594">Глубина цвета</b> отображает максимальное количество цветов которое может содержать изображение.';
+        contacts.innerHTML = 'Со всеми вопросами обращаться в телеграмм <b style="color: #180594">@blatisgense</b>.';
+    })
+    lang_eng.addEventListener('click', ()=>{
+        help.innerHTML = 'Help';
+        title.innerHTML = 'Screen Info by @Blatisgense';
+        sw.innerHTML = 'Screen width: ';
+        sh.innerHTML = 'Screen height: ';
+        aw.innerHTML = 'Available width: ';
+        ah.innerHTML = 'Available height: ';
+        ww.innerHTML = 'Window width: ';
+        wh.innerHTML = 'Window height: ';
+        so.innerHTML = 'Screen orientation:  ';
+        cd.innerHTML = 'Color depth: ';
+        screenshot_btn.innerHTML = 'Screenshot';
+
+        help_res.innerHTML = '<b style="color: #180594">Screen resolution</b> is the number of pixels a screen can show horizontally and vertically.';
+        help_avl.innerHTML = '<b style="color: #180594">Available screen</b> is the number of pixels that can used by applications (For example without Windows taskbar).';
+        help_win.innerHTML = '<b style="color: #180594">Window size</b> is the number of pixels that can used by browser for displaying content.';
+        help_dep.innerHTML = '<b style="color: #180594">Color depth</b> refers to the maximum number of colors an image can contain.';
+        contacts.innerHTML = 'For all questions write on telegram to <b style="color: #180594">@blatisgense</b>.';
+    })
+</script>
+</html>
